@@ -1,0 +1,16 @@
+{
+  "name": "sse-client",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "bin": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jean-Thierry Bonhomme <jtbonhomme@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^1.1.1",
+    "commander": "^2.9.0"
+  }
+}
