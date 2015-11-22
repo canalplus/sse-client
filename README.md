@@ -25,10 +25,6 @@ Usage: r7sseclient [options]
 
 this command will listen Server Sent Events from IP 192.168.1.16 and display any event whose field 'event' will be different from 'eit' or 'player'. 
 
-# Todo
-
-* Export sse logs in a logfile
-
 ```
 sse-client -h 192.168.1.16 -f eit,player
 ```
@@ -36,3 +32,7 @@ sse-client -h 192.168.1.16 -f eit,player
 # Reference
 
 * [HTML5 Rocks article: Stream Updates with Server-Sent Events](http://www.html5rocks.com/en/tutorials/eventsource/basics/?redirect_from_locale=fr)
+
+# Todo
+
+* Export sse logs in a logfile
