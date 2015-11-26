@@ -6,7 +6,7 @@ var chalk   = require('chalk');
 var fs      = require('fs');
 
 program
-    .version('0.0.1')
+    .version('0.0.2')
     .option('-h, --hostname <hostname>', 'Hast name of the event emitter.')
     .option('-f, --filters <filters>', 'Events you don\'t want to log (separated with comma). Can not be used with "lookup" option.')
     .option('-o, --output <filename>', 'Filename to store outputs.')
