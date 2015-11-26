@@ -12,7 +12,7 @@ program
     .option('-o, --output <filename>', 'Filename to store outputs.')
     .parse(process.argv);
 
-if(!program.hostname /*|| program.filters && program.lookup*/)
+if(!program.hostname)
     program.help();
  
 var options = {
