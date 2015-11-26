@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 
-var http = require('http');
+var http    = require('http');
 var program = require('commander');
-var chalk = require('chalk');
+var chalk   = require('chalk');
+var fs      = require('fs');
 
 program
     .version('0.0.1')
     .option('-h, --hostname <hostname>', 'Hast name of the event emitter.')
     .option('-f, --filters <filters>', 'Events you don\'t want to log (separated with comma). Can not be used with "lookup" option.')
-//    .option('-l, --lookup <lookup>', 'Events you only want to log (separated with comma). Can not be used with "filter" option.')
+    .option('-o, --output <filename>', 'Filename to store outputs.')
     .parse(process.argv);
 
 if(!program.hostname /*|| program.filters && program.lookup*/)
@@ -35,7 +36,7 @@ function isFiltered(event) {
   return match;
 }
 
-var filters = (program.fliter)?program.filter:[];
+var filters = (program.filter)?program.filter:[];
 var req = http.request(options, function(res){
     console.log(chalk.red('Connected ...'));
 
@@ -50,6 +51,8 @@ var req = http.request(options, function(res){
           skipNextLine=isFiltered(payload);
         }
         if(!skipNextLine && line !== '' && field !== 'id') {
+          if(program.filename)
+            fs.appendFileSync('message.txt', '|'+now.toJSON()+'| '+field+': '+payload, 'utf8');
           console.log('|%s| %s: %s', chalk.grey(now.toJSON()), chalk.green(field), chalk.cyan(payload));
         }
         if(field === 'data')
