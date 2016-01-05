@@ -12,7 +12,7 @@ npm install -g sse-client
 
 # Usage
 
-Usage: r7sseclient [options]
+Usage: sse-client [options]
 
   Options:
 
