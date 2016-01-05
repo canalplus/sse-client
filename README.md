@@ -2,7 +2,7 @@ sse-client
 ----------
 
 Simple Server Sent Event Client writtent in node.
-It allows to display events with a timestamped trace, save events to a file, and filter unwanted events.
+It allows to display events with a timestamped trace, save events to a file (to be developed), and filter unwanted events.
 
 # Installation
 
