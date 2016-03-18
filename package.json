@@ -1,6 +1,6 @@
 {
   "name": "sse-client",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "index.js",
   "bin": "index.js",
@@ -10,7 +10,10 @@
   "author": "Jean-Thierry Bonhomme <jtbonhomme@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "appendable-cli-menu": "^1.1.0",
+    "bonjour": "^3.2.2",
     "chalk": "^1.1.1",
-    "commander": "^2.9.0"
+    "commander": "^2.9.0",
+    "sse": "git+ssh://git@github.com/canalplus/sse-private.git"
   }
 }
