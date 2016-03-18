@@ -12,6 +12,8 @@ npm install -g sse-client
 
 # Usage
 
+From version 0.0.4, the usage changed. Options -l or -i are mandatory.
+
 Usage: sse-client [options]
 
   Options:
@@ -35,6 +37,29 @@ This command will opens a menu to send events to IP 192.168.1.16.
 
 ```
 sse-client -i -h 192.168.1.16
+
+Select an event module
+----------------------
+
+[0] avio
+[1] cas
+[2] hls
+[3] pdl
+
+Type a module number ...
+1
+
+Select a signal
+---------------
+
+[0] SmartCardStateChanged: card inserted
+[1] SmartCardStateChanged: card extracted
+[2] DescramblingStatus
+[3] ProgramAccess
+[4] OperatorAdded
+[5] OperatorRemoved
+[6] ProductAdded
+[7] ProductRemoved
 ```
 
 # Reference
