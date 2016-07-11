@@ -14,7 +14,7 @@
   process.on('SIGINT', exit);
 
   program
-      .version('0.0.5')
+      .version('0.0.6')
       .option('-h, --hostname <hostname>', 'host name of the event emitter.')
       .option('-f, --filters <filters>', 'events you don\'t want to log (separated with comma). Can not be used with "lookup" option.')
       .option('-o, --output <filename>', 'filename to store outputs (not available yet)')
