@@ -1,6 +1,6 @@
 {
   "name": "sse-client",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "index.js",
   "bin": "index.js",
@@ -12,7 +12,6 @@
   "dependencies": {
     "bonjour": "^3.2.2",
     "chalk": "^1.1.1",
-    "commander": "^2.9.0",
-    "sse": "git+ssh://git@github.com/canalplus/sse-private.git"
+    "commander": "^2.9.0"
   }
 }
