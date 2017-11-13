@@ -2,7 +2,7 @@ sse-client
 ----------
 
 Simple Server Sent Event Client writtent in node.
-It allows to display events with a timestamped trace, save events to a file (to be developed), and filter unwanted events.
+It allows to display server sent events prefixed with a timestamp, save events to a file, and filter unwanted events.
 
 # Installation
 
@@ -11,8 +11,6 @@ npm install -g sse-client
 ```
 
 # Usage
-
-From version 0.0.4, the usage changed. Options -l or -i are mandatory.
 
 Usage: sse-client [options]
 
@@ -23,9 +21,10 @@ Usage: sse-client [options]
     -h, --hostname <hostname>  hostname of the event emitter (mandatory).
     -f, --filters <filters>    events you don't want to log (separated with comma). Can not be used with "interactive" option.
     -r, --record <filename>    filename to store outputs. Can not be used with "interactive" option.
+
 # Example
 
-This command will listen Server Sent Events from IP 192.168.1.16,  display any event whose field 'event' will be different from 'eit' or 'player', and record the logs in /tmp/sse.log. 
+This command will listen Server Sent Events from IP 192.168.1.16, display any event whose field 'event' will be different from 'eit' or 'player', and record the logs in /tmp/sse.log. 
 
 ```
 sse-client -h 192.168.1.16 -f eit,player -r /tmp/sse.log
