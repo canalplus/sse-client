@@ -25,45 +25,12 @@ Usage: sse-client [options]
     -r, --record <filename>    filename to store outputs. Can not be used with "interactive" option.
 # Example
 
-This command will listen Server Sent Events from IP 192.168.1.16 and display any event whose field 'event' will be different from 'eit' or 'player'. 
+This command will listen Server Sent Events from IP 192.168.1.16,  display any event whose field 'event' will be different from 'eit' or 'player', and record the logs in /tmp/sse.log. 
 
 ```
-sse-client -l -h 192.168.1.16 -f eit,player
-```
-
-This command will opens a menu to send events to IP 192.168.1.16. 
-
-```
-sse-client -i -h 192.168.1.16
-
-Select an event module
-----------------------
-
-[0] avio
-[1] cas
-[2] hls
-[3] pdl
-
-Type a module number ...
-1
-
-Select a signal
----------------
-
-[0] SmartCardStateChanged: card inserted
-[1] SmartCardStateChanged: card extracted
-[2] DescramblingStatus
-[3] ProgramAccess
-[4] OperatorAdded
-[5] OperatorRemoved
-[6] ProductAdded
-[7] ProductRemoved
+sse-client -h 192.168.1.16 -f eit,player -r /tmp/sse.log
 ```
 
 # Reference
 
 * [HTML5 Rocks article: Stream Updates with Server-Sent Events](http://www.html5rocks.com/en/tutorials/eventsource/basics/?redirect_from_locale=fr)
-
-# Todo
-
-* Export sse logs in a logfile
