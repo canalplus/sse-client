@@ -59,75 +59,89 @@
     }
 
     process.on('SIGINT', function() {
-      writeableStream.write('\n');
-      process.stdout.write('\n');
+      process.stdout.write(chalk.green('\nReceived SIGINT.'));
 
-      console.log(chalk.green('Received SIGINT.'));
       if(program.record) {
-        console.log('Closing ' + chalk.cyan(fileName));
+        writeableStream.write(chalk.green('\nReceived SIGINT.'));
+        process.stdout.write('\nClosing ' + chalk.cyan(fileName));
         writeableStream.end();
       }
-      console.log('Exit.');
+      process.stdout.write('\nExit.\n');
       process.exit(0);
     });
 
     var req = http.request(optionsGet, function(res){
-        console.log(chalk.red('Connected ...'));
-        var _event;
-        var _data;
-        var accChunk;
-        var multiLineSav = false;
-        res.on('data', function (chunk) {
-          // check if last two bytes are == '\n\n'
-          var multiLine = (chunk[chunk.length-1] !== 10 && chunk[chunk.length-2] !== 10);
-          // if not, it was a multi chunk payload
-          if(multiLineSav) {
-            // if last chunk for the payload, strip mast two '\n'
-            if(!multiLine) {
-              chunk = chunk.slice(0,chunk.length-2);
-            }
-            writeableStream.write(chalk.cyan(chunk));
-            process.stdout.write(chalk.cyan(chunk));
-            multiLineSav = multiLine;
-          } else {
-            // handle multi sse in a single chunk
-            var lines = chunk.toString().split('\n');
-            var skipNextLine = false;
-
-            lines.forEach(function(line){
-              var field = line.split(': ')[0];
-              var payload = line.split(': ')[1];
-              if(field === 'event') {
-                skipNextLine=isFiltered(payload);
-              }
-              if(!skipNextLine && line !== '' && field !== 'id') {
-                var now = new Date();
-                if( field === 'event') {
-                  _event = payload;
-                }
-                if(program.record && field === 'data') {
-                  try{
-                    _data = JSON.parse(payload);
-                  }
-                  catch(e) {
-                    _data = payload;
-                  }
-                }
-                var msg = '\n|' + chalk.grey(now.toJSON())+'| ' + chalk.green(field)+': ' + chalk.cyan(payload);
-                writeableStream.write(msg);
-                process.stdout.write(msg);
-              }
-              if(field === 'data')
-                  skipNextLine = false;
-            });
-            multiLineSav = multiLine;
+      console.log(chalk.red('Connected ...'));
+      var _event;
+      var _data;
+      var accChunk;
+      var multiLineSav = false;
+      res.on('data', function (chunk) {
+        // check if last two bytes are == '\n\n'
+        var multiLine = (chunk[chunk.length-1] !== 10 && chunk[chunk.length-2] !== 10);
+        // if not, it was a multi chunk payload
+        if(multiLineSav) {
+          // if last chunk for the payload, strip mast two '\n'
+          if(!multiLine) {
+            chunk = chunk.slice(0,chunk.length-2);
           }
-        });
-        res.on('end', function() {
-          process.stdout.write('No more data in response.\n')
-        });
+          writeableStream.write(chalk.cyan(chunk));
+          process.stdout.write(chalk.cyan(chunk));
+          multiLineSav = multiLine;
+        } else {
+          // handle multi sse in a single chunk
+          var lines = chunk.toString().split('\n');
+          var skipNextLine = false;
+
+          lines.forEach(function(line){
+            var field = line.split(': ')[0];
+            var payload = line.split(': ')[1];
+            if(field === 'event') {
+              skipNextLine=isFiltered(payload);
+            }
+            if(!skipNextLine && line !== '' && field !== 'id') {
+              var now = new Date();
+              if( field === 'event') {
+                _event = payload;
+              }
+              if(program.record && field === 'data') {
+                try{
+                  _data = JSON.parse(payload);
+                }
+                catch(e) {
+                  _data = payload;
+                }
+              }
+              var msg = '\n|' + chalk.grey(now.toJSON())+'| ' + chalk.green(field)+': ' + chalk.cyan(payload);
+              if(program.record) {
+                writeableStream.write(msg);
+              }
+              process.stdout.write(msg);
+            }
+            if(field === 'data')
+                skipNextLine = false;
+          });
+          multiLineSav = multiLine;
+        }
+      });
+      res.on('end', function() {
+        var msg = '\nNo more data in response, or server closed connexion.\n' + chalk.red('--> exit !\n');
+        if(program.record) {
+          writeableStream.write(msg);
+        }
+        process.stdout.write(msg);
+        process.exit(-1);
+      });
     });
 
+    req.on('error', (e) => {
+      var msg = chalk.red('problem with request: ') + chalk.cyan(e.message) + chalk.red('\n--> exit !\n');
+      if(program.record) {
+        writeableStream.write(msg);
+      }
+      process.stdout.write(msg);
+      process.exit(-1);
+    });
     req.end();
   }
 })();
