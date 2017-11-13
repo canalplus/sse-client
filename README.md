@@ -19,12 +19,10 @@ Usage: sse-client [options]
   Options:
 
     -h, --help                 outputs usage information
-    -l, --listen               listens and displays SSE messages while they are sent by the host. Can not be used with "interactive" option.
-    -i, --interactive          opens an interactive menu to send event to the host. Can not be used with "listen" option.
     -V, --version              outputs the version number
     -h, --hostname <hostname>  hostname of the event emitter (mandatory).
     -f, --filters <filters>    events you don't want to log (separated with comma). Can not be used with "interactive" option.
-    -o, --output <filename>    filename to store outputs. Can not be used with "interactive" option.
+    -r, --record <filename>    filename to store outputs. Can not be used with "interactive" option.
 # Example
 
 This command will listen Server Sent Events from IP 192.168.1.16 and display any event whose field 'event' will be different from 'eit' or 'player'. 

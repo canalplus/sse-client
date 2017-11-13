@@ -21,15 +21,15 @@
       .parse(process.argv);
 
   if(!program.hostname) {
-    console.log('Error: you have to specify a host SSE you want to connect to.\nYou may find bellow a list of active SSE hosts');
+    console.log('You have to specify a host SSE you want to connect to.\nYou may find bellow a list of active SSE hosts :');
     var browser = bonjour.find({ type: 'g7' }, function (service) {
       console.log('The host "' + service.name + '" : [' + service.addresses[0] +'] is up ...');
     });
 
     setTimeout(function(){
-        browser.stop()
-        program.help();
-    }, 7000);
+        console.log('Stop browsing network.')
+        browser.stop();
+    }, 12000);
   } else {
     var optionsGet = {
         hostname: program.hostname,
