@@ -10,8 +10,30 @@
   var fs       = require('fs');
   var package  = require('./package.json');
 
-  var fileName, writeableStream;
-  var start    = new Date();
+  var FileStreamer = {
+    writeableStream: null,
+    fileName: null,
+    init: function(recordPath) {
+      if(!recordPath) return;
+
+      this.fileName = path.normalize(recordPath);
+      this.writeableStream = fs.createWriteStream(this.fileName);
+      console.log('Logs will be saved in ' + chalk.cyan(this.fileName));
+    },
+    write: function(msg) {
+      if(this.writeableStream) {
+        this.writeableStream.write(msg);
+      }
+    },
+    end: function() {
+      if(this.writeableStream) {
+        this.writeableStream.write(chalk.green('\nReceived SIGINT.'));
+        process.stdout.write('\nClosing ' + chalk.cyan(fileName));
+        this.writeableStream.end();
+      }
+    }
+  };
+
 
   program
       .version(package.version)
@@ -40,11 +62,7 @@
         }
     };
 
-    if(program.record) {
-      fileName = path.normalize(program.record);
-      writeableStream = fs.createWriteStream(fileName);
-      console.log('Logs will be saved in ' + chalk.cyan(fileName));
-    }
+    FileStreamer.init(program.record);
 
     function isFiltered(event) {
       var match = false;
@@ -61,11 +79,8 @@
     process.on('SIGINT', function() {
       process.stdout.write(chalk.green('\nReceived SIGINT.'));
 
-      if(program.record) {
-        writeableStream.write(chalk.green('\nReceived SIGINT.'));
-        process.stdout.write('\nClosing ' + chalk.cyan(fileName));
-        writeableStream.end();
-      }
+      FileStreamer.end();
+
       process.stdout.write('\nExit.\n');
       process.exit(0);
     });
@@ -85,7 +100,7 @@
           if(!multiLine) {
             chunk = chunk.slice(0,chunk.length-2);
           }
-          writeableStream.write(chalk.cyan(chunk));
+          FileStreamer.write(chalk.cyan(chunk));
           process.stdout.write(chalk.cyan(chunk));
           multiLineSav = multiLine;
         } else {
@@ -113,9 +128,7 @@
                 }
               }
               var msg = '\n|' + chalk.grey(now.toJSON())+'| ' + chalk.green(field)+': ' + chalk.cyan(payload);
-              if(program.record) {
-                writeableStream.write(msg);
-              }
+              FileStreamer.write(msg);
               process.stdout.write(msg);
             }
             if(field === 'data')
@@ -126,9 +139,7 @@
       });
       res.on('end', function() {
         var msg = '\nNo more data in response, or server closed connexion.\n' + chalk.red('--> exit !\n');
-        if(program.record) {
-          writeableStream.write(msg);
-        }
+        FileStreamer.write(msg);
         process.stdout.write(msg);
         process.exit(-1);
       });
@@ -136,9 +147,7 @@
 
     req.on('error', (e) => {
       var msg = chalk.red('problem with request: ') + chalk.cyan(e.message) + chalk.red('\n--> exit !\n');
-      if(program.record) {
-        writeableStream.write(msg);
-      }
+      FileStreamer.write(msg);
       process.stdout.write(msg);
       process.exit(-1);
     });
